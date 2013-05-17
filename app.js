@@ -7,7 +7,7 @@ var http = require('http'),
     util = require('util');
  
 http.createServer(function (req, res) {
-  var path = 'video1.AVI';
+  var path = 'video1.mp4';
   var stat = fs.statSync(path);
   var total = stat.size;
   if (req.headers['range']) {
@@ -22,11 +22,11 @@ http.createServer(function (req, res) {
     console.log('RANGE: ' + start + ' - ' + end + ' = ' + chunksize);
  
     var file = fs.createReadStream(path, {start: start, end: end});
-    res.writeHead(206, { 'Content-Range': 'bytes ' + start + '-' + end + '/' + total, 'Accept-Ranges': 'bytes', 'Content-Length': chunksize, 'Content-Type': 'video/avi' });
+    res.writeHead(206, { 'Content-Range': 'bytes ' + start + '-' + end + '/' + total, 'Accept-Ranges': 'bytes', 'Content-Length': chunksize, 'Content-Type': 'video/mp4' });
     file.pipe(res);
   } else {
     console.log('ALL: ' + total);
-    res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'video/avi' });
+    res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'video/mp4' });
     fs.createReadStream(path).pipe(res);
   }
 }).listen(1337, '127.0.0.1');
